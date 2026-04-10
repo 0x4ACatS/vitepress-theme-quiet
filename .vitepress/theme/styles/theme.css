@@ -1,0 +1,187 @@
+/* ── Quiet Theme — CSS Variables ─────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap');
+
+/* ── Always dark ─────────────────────────────────────────────────────── */
+:root {
+  /* Core palette */
+  --vp-c-bg:            #0F1117;
+  --vp-c-bg-soft:       #161B22;
+  --vp-c-bg-mute:       #1C2128;
+  --vp-c-bg-alt:        #161B22;
+
+  --vp-c-text-1:        #E6EDF3;
+  --vp-c-text-2:        #8B949E;
+  --vp-c-text-3:        #6E7681;
+
+  --vp-c-brand-1:       #58A6FF;
+  --vp-c-brand-2:       #79C0FF;
+  --vp-c-brand-3:       #388BFD;
+  --vp-c-brand-soft:    rgba(88, 166, 255, 0.12);
+
+  --vp-c-border:        #30363D;
+  --vp-c-divider:       #21262D;
+
+  /* Card */
+  --q-card-bg:          #161B22;
+  --q-card-border:      #30363D;
+  --q-card-radius:      10px;
+  --q-card-glow:        0 0 18px rgba(88, 166, 255, 0.18);
+
+  /* Nav */
+  --q-nav-bg:           rgba(15, 17, 23, 0.85);
+
+  /* Typography */
+  --vp-font-family-base:  'Inter', 'Noto Sans SC', system-ui, sans-serif;
+  --vp-font-family-mono:  'JetBrains Mono', monospace;
+
+  /* Layout */
+  --vp-layout-max-width: 1200px;
+  --q-content-width:     720px;
+
+  color-scheme: dark;
+}
+
+/* Mirror dark vars for VitePress internal .dark selectors */
+.dark {
+  --vp-c-bg:            #0F1117;
+  --vp-c-bg-soft:       #161B22;
+  --vp-c-bg-mute:       #1C2128;
+  --vp-c-bg-alt:        #161B22;
+  --vp-c-text-1:        #E6EDF3;
+  --vp-c-text-2:        #8B949E;
+  --vp-c-text-3:        #6E7681;
+  --vp-c-brand-1:       #58A6FF;
+  --vp-c-brand-2:       #79C0FF;
+  --vp-c-brand-3:       #388BFD;
+  --vp-c-brand-soft:    rgba(88, 166, 255, 0.12);
+  --vp-c-border:        #30363D;
+  --vp-c-divider:       #21262D;
+  --q-card-bg:          #161B22;
+  --q-card-border:      #30363D;
+  --q-card-glow:        0 0 18px rgba(88, 166, 255, 0.18);
+  --q-nav-bg:           rgba(15, 17, 23, 0.85);
+}
+
+/* ── Reset / Base ────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background-color: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+  font-family: var(--vp-font-family-base);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── VitePress Nav (doc pages) ───────────────────────────────────────── */
+
+.VPNav {
+  background: var(--q-nav-bg) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--vp-c-border) !important;
+}
+
+.VPNavBar {
+  background: transparent !important;
+}
+
+/* Hide dark/light toggle — dark mode is forced */
+.VPSwitchAppearance { display: none !important; }
+
+/* ── VitePress Content width ─────────────────────────────────────────── */
+
+.VPDoc .content-container {
+  max-width: var(--q-content-width) !important;
+}
+
+/* ── Prose / Article ─────────────────────────────────────────────────── */
+
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3,
+.vp-doc h4 {
+  font-family: var(--vp-font-family-mono);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.vp-doc h1 { font-size: 1.9rem; margin-top: 0; }
+.vp-doc h2 {
+  font-size: 1.3rem;
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.vp-doc p { margin: 1.1rem 0; }
+
+.vp-doc a {
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+.vp-doc a:hover { border-bottom-color: var(--vp-c-brand-2); }
+
+/* ── Code blocks ─────────────────────────────────────────────────────── */
+
+.vp-doc div[class*='language-'] {
+  border: 1px solid var(--vp-c-border);
+  border-radius: var(--q-card-radius);
+  background: var(--vp-c-bg-soft) !important;
+}
+
+.vp-doc code {
+  font-family: var(--vp-font-family-mono);
+  font-size: 0.88em;
+  background: var(--vp-c-bg-mute);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+/* ── Custom containers ───────────────────────────────────────────────── */
+
+.vp-doc .custom-block.info {
+  background: var(--vp-c-brand-soft);
+  border-left: 3px solid var(--vp-c-brand-3);
+  border-radius: 0 var(--q-card-radius) var(--q-card-radius) 0;
+}
+
+.vp-doc .custom-block.tip {
+  background: var(--vp-c-bg-mute);
+  border-left: 3px solid var(--vp-c-text-3);
+  border-radius: 0 var(--q-card-radius) var(--q-card-radius) 0;
+}
+.vp-doc .custom-block.tip .custom-block-title::before {
+  content: '🧠 ';
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--vp-c-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--vp-c-text-3); }
+
+/* ── Transitions ─────────────────────────────────────────────────────── */
+
+.VPContent { transition: opacity 0.25s ease; }
+
+/* ── Selection ───────────────────────────────────────────────────────── */
+
+::selection {
+  background: var(--vp-c-brand-soft);
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────── */
+
+.VPSidebar {
+  background: var(--vp-c-bg) !important;
+  border-right: 1px solid var(--vp-c-border) !important;
+}
