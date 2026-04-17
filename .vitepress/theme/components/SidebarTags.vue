@@ -1,6 +1,9 @@
 <template>
   <nav class="shelf-section">
-    <p class="shelf-heading">🏷 标签</p>
+    <p class="shelf-heading">
+      <FontAwesomeIcon :icon="faTag" class="shelf-icon" />
+      标签
+    </p>
     <div class="tag-cloud">
       <a
         v-for="tag in tags"
@@ -14,6 +17,8 @@
 
 <script setup lang="ts">
 import { withBase } from 'vitepress'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faTag } from '@fortawesome/free-solid-svg-icons'
 
 defineProps<{
   tags: string[]
@@ -27,6 +32,15 @@ defineProps<{
   letter-spacing: 0.1em;
   color: var(--vp-c-text-3);
   margin: 0 0 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.shelf-icon {
+  font-size: 0.85rem;
+  width: 1em;
+  height: 1em;
 }
 
 .tag-cloud {

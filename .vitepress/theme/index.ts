@@ -4,6 +4,13 @@ import type { Theme } from 'vitepress'
 
 import "./styles/theme.css"
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faKeyboard, faBook, faMoon, faBookmark, faTag } from '@fortawesome/free-solid-svg-icons'
+
+// Add icons to the library
+library.add(faKeyboard, faBook, faMoon, faBookmark, faTag)
+
 import Home      from './layouts/Home.vue'
 import Posts     from './layouts/Posts.vue'
 import Categories from './layouts/Categories.vue'
@@ -24,6 +31,7 @@ export default {
   },
 
   enhanceApp({ app, router }) {
+    app.component('FontAwesome', FontAwesomeIcon)
     app.component('Home',      Home)
     app.component('Posts',     Posts)
     app.component('Categories', Categories)

@@ -1,6 +1,9 @@
 <template>
   <nav class="shelf-section">
-    <p class="shelf-heading">📚 分类</p>
+    <p class="shelf-heading">
+      <FontAwesomeIcon :icon="faBookmark" class="shelf-icon" />
+      分类
+    </p>
     <ul class="shelf-list">
       <li v-for="cat in categories" :key="cat.name">
         <a :href="withBase(`/categories?category=${encodeURIComponent(cat.name)}`)" class="shelf-link">
@@ -14,6 +17,8 @@
 
 <script setup lang="ts">
 import { withBase } from 'vitepress'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faBookmark } from '@fortawesome/free-solid-svg-icons'
 
 defineProps<{
   categories: Array<{
@@ -30,6 +35,15 @@ defineProps<{
   letter-spacing: 0.1em;
   color: var(--vp-c-text-3);
   margin: 0 0 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.shelf-icon {
+  font-size: 0.85rem;
+  width: 1em;
+  height: 1em;
 }
 
 .shelf-list {

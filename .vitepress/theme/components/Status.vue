@@ -6,15 +6,15 @@
     </div>
     <ul class="status-list">
       <li v-if="status">
-        <span class="status-icon">⌨️</span>
+        <FontAwesomeIcon :icon="faKeyboard" class="status-icon" />
         <span>{{ status }}</span>
       </li>
       <li v-if="reading">
-        <span class="status-icon">📖</span>
+        <FontAwesomeIcon :icon="faBook" class="status-icon" />
         <span>{{ reading }}</span>
       </li>
       <li v-if="mood">
-        <span class="status-icon">🌙</span>
+        <FontAwesomeIcon :icon="faMoon" class="status-icon" />
         <span>{{ mood }}</span>
       </li>
     </ul>
@@ -22,6 +22,10 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps, withDefaults } from 'vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faKeyboard, faBook, faMoon } from '@fortawesome/free-solid-svg-icons'
+
 withDefaults(
   defineProps<{ status?: string; reading?: string; mood?: string }>(),
   { status: '正在写博客', reading: '待填写', mood: '平静' }
@@ -81,6 +85,17 @@ withDefaults(
   font-size: 0.85rem;
   color: var(--vp-c-text-2);
   line-height: 1.5;
+}
+
+.status-icon {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  width: 1em;
+  height: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.125em;
 }
 
 .now-icon { font-size: 0.9rem; flex-shrink: 0; }
