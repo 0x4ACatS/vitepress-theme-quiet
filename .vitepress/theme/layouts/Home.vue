@@ -6,6 +6,7 @@
     <!-- Hero / Window -->
     <section class="hero">
       <StarField />
+      <div class="hero-fade" aria-hidden="true" />
       <div class="hero-content">
         <p class="hero-eyebrow">{{ siteData.title }}</p>
         <h1 class="hero-title">在混乱中<br>保持安静</h1>
@@ -166,6 +167,18 @@ const categories = computed(() => {
 .hero-btn:hover {
   border-color: var(--vp-c-brand-1);
   box-shadow: 0 0 14px rgba(88, 166, 255, 0.25);
+}
+
+/* gradient veil that dissolves the starfield into the posts section */
+.hero-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 45%;
+  background: linear-gradient(to bottom, transparent 0%, #0F1117 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* ── Body ──────────────────────────────────────────────────────────── */

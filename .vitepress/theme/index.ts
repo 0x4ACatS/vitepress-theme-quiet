@@ -26,7 +26,8 @@ export default {
 
   Layout() {
     return h(DefaultTheme.Layout, null, {
-      'doc-before': () => h(PostMeta),
+      'layout-top': () => h(NavBar),
+      'doc-before':  () => h(PostMeta),
     })
   },
 

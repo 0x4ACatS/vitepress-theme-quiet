@@ -7,65 +7,107 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const canvas = ref<HTMLCanvasElement | null>(null)
 let animFrame: number
+let cleanup: (() => void) | null = null
 
-interface Star {
-  x: number
-  y: number
-  r: number
-  alpha: number
-  speed: number
-  dir: 1 | -1
-}
-
-onMounted(() => {
+onMounted(async () => {
   const el = canvas.value
   if (!el) return
 
-  const ctx = el.getContext('2d')!
-  let w = 0, h = 0
-  const stars: Star[] = []
+  const THREE = await import('three')
+
+  const renderer = new THREE.WebGLRenderer({ canvas: el, alpha: true, antialias: false })
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setClearColor(0x000000, 0)
+
+  const scene = new THREE.Scene()
+  const camera = new THREE.PerspectiveCamera(70, 1, 0.1, 100)
+  camera.position.z = 2.5
+
+  // Far layer — many small dim stars
+  const farCount = 500
+  const farPos = new Float32Array(farCount * 3)
+  for (let i = 0; i < farCount; i++) {
+    farPos[i * 3]     = (Math.random() - 0.5) * 8
+    farPos[i * 3 + 1] = (Math.random() - 0.5) * 8
+    farPos[i * 3 + 2] = (Math.random() - 0.5) * 4
+  }
+  const farGeo = new THREE.BufferGeometry()
+  farGeo.setAttribute('position', new THREE.BufferAttribute(farPos, 3))
+  const farMat = new THREE.PointsMaterial({
+    color: 0xC8D8E8,
+    size: 0.012,
+    sizeAttenuation: true,
+    transparent: true,
+    opacity: 0.5,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  })
+  const farPoints = new THREE.Points(farGeo, farMat)
+  scene.add(farPoints)
+
+  // Near layer — fewer larger brighter stars
+  const nearCount = 180
+  const nearPos = new Float32Array(nearCount * 3)
+  for (let i = 0; i < nearCount; i++) {
+    nearPos[i * 3]     = (Math.random() - 0.5) * 6
+    nearPos[i * 3 + 1] = (Math.random() - 0.5) * 6
+    nearPos[i * 3 + 2] = (Math.random() - 0.5) * 3
+  }
+  const nearGeo = new THREE.BufferGeometry()
+  nearGeo.setAttribute('position', new THREE.BufferAttribute(nearPos, 3))
+  const nearMat = new THREE.PointsMaterial({
+    color: 0xE6EDF3,
+    size: 0.028,
+    sizeAttenuation: true,
+    transparent: true,
+    opacity: 0.75,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  })
+  const nearPoints = new THREE.Points(nearGeo, nearMat)
+  scene.add(nearPoints)
 
   const resize = () => {
-    w = el.width  = el.offsetWidth
-    h = el.height = el.offsetHeight
+    const w = el.offsetWidth
+    const h = el.offsetHeight
+    renderer.setSize(w, h, false)
+    camera.aspect = w / h
+    camera.updateProjectionMatrix()
   }
-
-  const seed = () => {
-    stars.length = 0
-    const count = Math.floor((w * h) / 6000)
-    for (let i = 0; i < count; i++) {
-      stars.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: Math.random() * 1.2 + 0.3,
-        alpha: Math.random() * 0.6 + 0.1,
-        speed: Math.random() * 0.003 + 0.001,
-        dir: Math.random() > 0.5 ? 1 : -1,
-      })
-    }
-  }
-
-  const draw = () => {
-    ctx.clearRect(0, 0, w, h)
-    for (const s of stars) {
-      s.alpha += s.speed * s.dir
-      if (s.alpha >= 0.75 || s.alpha <= 0.05) s.dir *= -1
-      ctx.beginPath()
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2)
-      ctx.fillStyle = `rgba(230, 237, 243, ${s.alpha})`
-      ctx.fill()
-    }
-    animFrame = requestAnimationFrame(draw)
-  }
-
   resize()
-  seed()
+
+  const resizeObs = new ResizeObserver(resize)
+  resizeObs.observe(el)
+
+  let t = 0
+  const draw = () => {
+    animFrame = requestAnimationFrame(draw)
+    t += 0.00025
+
+    farPoints.rotation.y  = t * 0.4
+    farPoints.rotation.x  = t * 0.15
+    nearPoints.rotation.y = t * 0.65
+    nearPoints.rotation.x = t * 0.22
+
+    farMat.opacity  = 0.38 + Math.sin(t * 2.1) * 0.12
+    nearMat.opacity = 0.65 + Math.sin(t * 1.7 + 1) * 0.15
+
+    renderer.render(scene, camera)
+  }
   draw()
 
-  window.addEventListener('resize', () => { resize(); seed() })
+  cleanup = () => {
+    cancelAnimationFrame(animFrame)
+    resizeObs.disconnect()
+    farGeo.dispose()
+    farMat.dispose()
+    nearGeo.dispose()
+    nearMat.dispose()
+    renderer.dispose()
+  }
 })
 
-onUnmounted(() => cancelAnimationFrame(animFrame))
+onUnmounted(() => cleanup?.())
 </script>
 
 <style scoped>

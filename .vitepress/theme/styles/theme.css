@@ -67,6 +67,10 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 body {
   background-color: var(--vp-c-bg);
   color: var(--vp-c-text-1);
@@ -75,18 +79,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── VitePress Nav (doc pages) ───────────────────────────────────────── */
+/* ── VitePress Nav (replaced by custom NavBar via layout-top slot) ───── */
 
-.VPNav {
-  background: var(--q-nav-bg) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--vp-c-border) !important;
-}
-
-.VPNavBar {
-  background: transparent !important;
-}
+.VPNav { display: none !important; }
 
 /* Hide dark/light toggle — dark mode is forced */
 .VPSwitchAppearance { display: none !important; }
