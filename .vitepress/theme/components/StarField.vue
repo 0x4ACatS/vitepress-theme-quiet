@@ -68,8 +68,8 @@ onMounted(async () => {
   scene.add(nearPoints)
 
   const resize = () => {
-    const w = el.offsetWidth
-    const h = el.offsetHeight
+    const w = el.offsetWidth || window.innerWidth
+    const h = el.offsetHeight || window.innerHeight
     renderer.setSize(w, h, false)
     camera.aspect = w / h
     camera.updateProjectionMatrix()
@@ -112,10 +112,12 @@ onUnmounted(() => cleanup?.())
 
 <style scoped>
 .star-field {
-  position: absolute;
+  position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
 }
 </style>

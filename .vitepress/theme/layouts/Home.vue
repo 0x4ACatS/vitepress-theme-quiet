@@ -108,7 +108,6 @@ const categories = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(160deg, #0F1117 0%, #161B22 100%);
   overflow: hidden;
 }
 
